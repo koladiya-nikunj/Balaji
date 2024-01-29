@@ -6,7 +6,7 @@ import { Client } from './sales-channel.model';
 
 @Controller('/sales-channel')
 export class SalesChannelController {
-  constructor(private readonly salesChannelService: SalesChannelService) {}
+  constructor(private readonly salesChannelService: SalesChannelService) { }
 
   @Get()
   async findAllApi(): Promise<Client[]> {
