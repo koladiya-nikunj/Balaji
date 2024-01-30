@@ -59,6 +59,13 @@ export class SalesChannelService {
       throw new BadRequestException('salesId must be a string value.');
     }
 
+    // Check for duplicate userId
+    const existingOrderWithUserId = await this.clientModel.findOne({ salesId: data.salesId }).exec();
+    if (existingOrderWithUserId) {
+        console.log('salesId must be unique.');
+        throw new ConflictException('salesId must be unique.');
+    }
+
     // Validate onboardCount is a numeric string
     if (isNumberString(data.onboardCount) || isString(data.onboardCount)) {
       console.log('onboardCount must be a numeric value.');

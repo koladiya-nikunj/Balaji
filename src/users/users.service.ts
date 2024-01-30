@@ -20,16 +20,16 @@ export class UsersService {
     async getAllUsers(): Promise<User[]> {
         const allUsers = await this.userModel.find().exec();
         console.log(allUsers);
-        
+
         return allUsers;
     }
 
     async postUser(data: UserDto): Promise<User> {
         // Check if both email and userId are empty
-    if (!data.email && !data.userId) {
-        console.log('Email and userId are empty.');
-        throw new BadRequestException('Email and userId must not be empty.');
-      }
+        if (!data.email && !data.userId) {
+            console.log('Email and userId are empty.');
+            throw new BadRequestException('Email and userId must not be empty.');
+        }
 
         // Check if any required fields are empty
         const requiredFields = ['email', 'userId'];
@@ -57,6 +57,13 @@ export class UsersService {
         if (!isString(data.userId)) {
             console.log('userId must be a string value.');
             throw new BadRequestException('userId must be a string value.');
+        }
+
+        // Check for duplicate userId
+        const existingOrderWithUserId = await this.userModel.findOne({ userId: data.userId }).exec();
+        if (existingOrderWithUserId) {
+            console.log('userId must be unique.');
+            throw new ConflictException('userId must be unique.');
         }
 
         // Create a new document using the Mongoose model
