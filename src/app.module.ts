@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule,ConfigService } from '@nestjs/config';
 import {Client,ClientModel} from './salseChannel/sales-channel.model'
 import { UsersModule } from './users/users.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [ 
@@ -21,7 +22,7 @@ import { UsersModule } from './users/users.module';
     inject: [ConfigService],
   }),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-  SalesChannelModule,UsersModule],
+  SalesChannelModule,UsersModule,OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })
