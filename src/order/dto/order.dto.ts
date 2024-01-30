@@ -17,7 +17,7 @@ export class OrderDto {
 
   @IsNotEmpty()
   @IsNumber()
-  pin: number;
+  pincode: number;
 
   @IsNotEmpty()
   @IsNumber()

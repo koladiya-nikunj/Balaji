@@ -16,14 +16,15 @@ const validateEmailFormat = (email: string) => {
 export class SalesChannelService {
   constructor(@InjectModel(Client.name) private clientModel: Model<Client>) { }
 
+  // Get All Clients
   async findAll(): Promise<Client[]> {
     const allData = await this.clientModel.find().exec();
     console.log(allData);
 
-    // Retrieve all documents from the database
     return allData;
   }
 
+  // Post Data
   async postData(data: salesDto): Promise<Client> {
     // Count the number of empty fields
     const emptyFields = ['email', 'salesId', 'onboardCount'].filter(field => !data[field]);
@@ -62,8 +63,8 @@ export class SalesChannelService {
     // Check for duplicate userId
     const existingOrderWithUserId = await this.clientModel.findOne({ salesId: data.salesId }).exec();
     if (existingOrderWithUserId) {
-        console.log('salesId must be unique.');
-        throw new ConflictException('salesId must be unique.');
+      console.log('salesId must be unique.');
+      throw new ConflictException('salesId must be unique.');
     }
 
     // Validate onboardCount is a numeric string

@@ -17,6 +17,7 @@ const validateEmailFormat = (email: string) => {
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<User>) { }
 
+    // GEt All Users
     async getAllUsers(): Promise<User[]> {
         const allUsers = await this.userModel.find().exec();
         console.log(allUsers);
@@ -24,6 +25,7 @@ export class UsersService {
         return allUsers;
     }
 
+    // Post User
     async postUser(data: UserDto): Promise<User> {
         // Check if both email and userId are empty
         if (!data.email && !data.userId) {

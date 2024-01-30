@@ -15,14 +15,16 @@ export class OrderService {
   // Get All Ordrs
   async getAllOrders(): Promise<Order[]> {
     const allOrders = await this.orderModel.find().exec();
+    console.log(allOrders);
+    
     return allOrders;
   }
 
-  // Post order
+  // Post Order
   async postOrder(data: OrderDto): Promise<Order> {
 
     // // Check if any required fields are empty
-    const requiredFields = ['orderId', 'amount', 'pin', 'invoice', 'weight', 'height', 'length', 'label'];
+    const requiredFields = ['orderId', 'amount', 'pincode', 'invoice', 'weight', 'height', 'length', 'label'];
     let emptyFields = [];
 
     for (const field of requiredFields) {
@@ -72,11 +74,11 @@ export class OrderService {
       throw new HttpException(errorMessage, HttpStatus.CONFLICT);
     }
 
-    // pin validation
-    const pinValue = data.pin;
+    // pincode validation
+    const pinValue = data.pincode;
 
     if (typeof pinValue !== 'number' || isNaN(pinValue) || !(/^\d{6}$/.test(pinValue.toString()))) {
-      const pinErrorMessage = 'Invalid input: pin must be a number and must be a 6-digit number.';
+      const pinErrorMessage = 'Invalid input: pincode must be a number and must be a 6-digit number.';
       console.log(pinErrorMessage);
       throw new HttpException(pinErrorMessage, HttpStatus.BAD_REQUEST);
     }

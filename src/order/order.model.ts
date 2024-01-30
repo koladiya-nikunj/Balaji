@@ -23,7 +23,7 @@ export class Order {
   @Prop({ required: true })
   @IsNotEmpty()
   @IsNumber()
-  pin: number;
+  pincode: number;
 
   @Prop({ required: true })
   @IsNotEmpty()
