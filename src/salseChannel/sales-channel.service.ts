@@ -47,26 +47,27 @@ export class SalesChannelService {
       throw new BadRequestException('Email must end with @gmail.com');
     }
 
-    // Check if the email already exists in the database
-    const existingClient = await this.clientModel.findOne({ email: data.email }).exec();
-    if (existingClient) {
-      console.log('Email is already exist.');
-      throw new ConflictException('Email is already exist.');
-    }
-
     // Validate salesId is a string
     if (!isString(data.salesId)) {
       console.log('salesId must be a string value.');
       throw new BadRequestException('salesId must be a string value.');
     }
 
-    // Check for duplicate userId
-    const existingOrderWithUserId = await this.clientModel.findOne({ salesId: data.salesId }).exec();
-    if (existingOrderWithUserId) {
-      console.log('salesId must be unique.');
-      throw new ConflictException('salesId must be unique.');
+    // Check if the email or salesId already exists in the database
+    const existingClientEmail = await this.clientModel.findOne({ email: data.email }).exec();
+    const existingClientSalesId = await this.clientModel.findOne({ salesId: data.salesId }).exec();
+    
+    if (existingClientEmail || existingClientSalesId) {
+      const errorMessage = existingClientEmail && existingClientSalesId
+        ? 'Email and salesId already exist.'
+        : existingClientEmail
+          ? 'email already exists.'
+          : 'salesId already exists.';
+      
+      console.log(errorMessage);
+      throw new ConflictException(errorMessage);
     }
-
+    
     // Validate onboardCount is a numeric string
     if (isNumberString(data.onboardCount) || isString(data.onboardCount)) {
       console.log('onboardCount must be a numeric value.');

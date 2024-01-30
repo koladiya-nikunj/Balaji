@@ -48,18 +48,20 @@ export class UsersService {
             throw new BadRequestException('Email must end with @gmail.com');
         }
 
-        // Check if the email already exists in the database
-        const existingClient = await this.userModel.findOne({ email: data.email }).exec();
-        if (existingClient) {
-            console.log('Email is already exist.');
-            throw new ConflictException('Email is already exist.');
+        const existingClientEmail = await this.userModel.findOne({ email: data.email }).exec();
+        const existingClientUserId = await this.userModel.findOne({ userId: data.userId }).exec();
+
+        if (existingClientEmail || existingClientUserId) {
+            const errorMessage = existingClientEmail && existingClientUserId
+                ? 'Email and salesId already exist.'
+                : existingClientEmail
+                    ? 'Email already exists.'
+                    : 'salesId already exists.';
+
+            console.log(errorMessage);
+            throw new ConflictException(errorMessage);
         }
 
-        // Validate userId is a string
-        if (!isString(data.userId)) {
-            console.log('userId must be a string value.');
-            throw new BadRequestException('userId must be a string value.');
-        }
 
         // Check for duplicate userId
         const existingOrderWithUserId = await this.userModel.findOne({ userId: data.userId }).exec();
