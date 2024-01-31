@@ -8,7 +8,7 @@ export class Client extends Document {
   email: string;
 
   @Prop({ required: true })
-  salesId: string;
+  sellId: string;
 
   @Prop({ required: true })
   onboardCount: number;

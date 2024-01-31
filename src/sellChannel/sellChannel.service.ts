@@ -1,8 +1,8 @@
-// sales-channel.service.ts
+// sellChannel.service.ts
 import { ConflictException, Injectable, BadRequestException } from '@nestjs/common';
-import { Client, ClientModel } from './sales-channel.model';
+import { Client, ClientModel } from './sellChannel.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { salesDto } from './dto/salesDto';
+import { sellDto } from './dto/sellDto';
 import { Model } from 'mongoose';
 import { isNumberString, isString } from 'class-validator';
 
@@ -13,7 +13,7 @@ const validateEmailFormat = (email: string) => {
 };
 
 @Injectable()
-export class SalesChannelService {
+export class SellChannelService {
   constructor(@InjectModel(Client.name) private clientModel: Model<Client>) { }
 
   // Get All Clients
@@ -25,9 +25,9 @@ export class SalesChannelService {
   }
 
   // Post Data
-  async postData(data: salesDto): Promise<Client> {
+  async postData(data: sellDto): Promise<Client> {
     // Count the number of empty fields
-    const emptyFields = ['email', 'salesId', 'onboardCount'].filter(field => !data[field]);
+    const emptyFields = ['email', 'sellId', 'onboardCount'].filter(field => !data[field]);
 
     // Check if any field is empty
     if (emptyFields.length === 1) {
@@ -47,22 +47,22 @@ export class SalesChannelService {
       throw new BadRequestException('Email must end with @gmail.com');
     }
 
-    // Validate salesId is a string
-    if (!isString(data.salesId)) {
-      console.log('salesId must be a string value.');
-      throw new BadRequestException('salesId must be a string value.');
+    // Validate sellId is a string
+    if (!isString(data.sellId)) {
+      console.log('sellId must be a string value.');
+      throw new BadRequestException('sellId must be a string value.');
     }
 
-    // Check if the email or salesId already exists in the database
+    // Check if the email or sellId already exists in the database
     const existingClientEmail = await this.clientModel.findOne({ email: data.email }).exec();
-    const existingClientSalesId = await this.clientModel.findOne({ salesId: data.salesId }).exec();
+    const existingClientsellId = await this.clientModel.findOne({ sellId: data.sellId }).exec();
     
-    if (existingClientEmail || existingClientSalesId) {
-      const errorMessage = existingClientEmail && existingClientSalesId
-        ? 'Email and salesId already exist.'
+    if (existingClientEmail || existingClientsellId) {
+      const errorMessage = existingClientEmail && existingClientsellId
+        ? 'Email and sellId already exist.'
         : existingClientEmail
           ? 'email already exists.'
-          : 'salesId already exists.';
+          : 'sellId already exists.';
       
       console.log(errorMessage);
       throw new ConflictException(errorMessage);

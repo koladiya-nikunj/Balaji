@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SalesChannelModule } from './salseChannel/sales-channel.module';
+import { SellChannelModule } from './sellChannel/sellChannel.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule,ConfigService } from '@nestjs/config';
-import {Client,ClientModel} from './salseChannel/sales-channel.model'
+import {Client,ClientModel} from './sellChannel/sellChannel.model'
 import { UsersModule } from './users/users.module';
 import { OrderModule } from './order/order.module';
 
@@ -22,7 +22,7 @@ import { OrderModule } from './order/order.module';
     inject: [ConfigService],
   }),
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-  SalesChannelModule,UsersModule,OrderModule],
+  SellChannelModule,UsersModule,OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })
