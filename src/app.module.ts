@@ -7,7 +7,7 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
 import {Client,ClientModel} from './sellChannel/sellChannel.model'
 import { UsersModule } from './users/users.module';
 import { OrderModule } from './order/order.module';
-import { MySqlModule } from './mysql/mysql.module';
+import { MySqlModule } from './sellChannel/mysql/mysql.module';
 
 @Module({
   imports: [ 

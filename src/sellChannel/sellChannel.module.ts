@@ -4,7 +4,7 @@ import { SellChannelController } from './sellChannel.controller';
 import { SellChannelService } from './sellChannel.service';
 import { Client, ClientModel } from './sellChannel.model';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MySqlService } from 'src/mysql/mysql.service';
+import { MySqlService } from 'src/sellChannel/mysql/mysql.service';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }])],

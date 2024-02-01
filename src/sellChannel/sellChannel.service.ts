@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { sellDto } from './dto/sellDto';
 import { Model } from 'mongoose';
 import { isNumberString, isString } from 'class-validator';
-import { MySqlService } from '../mysql/mysql.service'
+import { MySqlService } from './mysql/mysql.service'
 
 @Injectable()
 export class SellChannelService {
@@ -77,7 +77,6 @@ export class SellChannelService {
           ? 'email already exists.'
           : 'sales_id already exists.';
       
-      console.log(errorMessage);
       throw new ConflictException(errorMessage);
     }
     
