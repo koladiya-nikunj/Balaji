@@ -11,7 +11,7 @@ export class Client extends Document {
   sales_id: string;
 
   @Prop({ required: true })
-  onboardCount: number;
+  total_onboarded_reseller: number;
 }
 
 export const ClientModel = SchemaFactory.createForClass(Client);

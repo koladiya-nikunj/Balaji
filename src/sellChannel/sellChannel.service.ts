@@ -5,16 +5,35 @@ import { InjectModel } from '@nestjs/mongoose';
 import { sellDto } from './dto/sellDto';
 import { Model } from 'mongoose';
 import { isNumberString, isString } from 'class-validator';
-
-// Custom validation function for email format
-const validateEmailFormat = (email: string) => {
-  const emailRegex = /^[^\s@]+@gmail\.com$/;
-  return emailRegex.test(email);
-};
+import { MySqlService } from '../mysql/mysql.service'
 
 @Injectable()
 export class SellChannelService {
-  constructor(@InjectModel(Client.name) private clientModel: Model<Client>) { }
+  constructor(@InjectModel(Client.name) private clientModel: Model<Client>,
+     private readonly mySqlService: MySqlService,
+  ) { }
+
+  async getDataFromMySQLToMongo(sales_id: string): Promise<Client> {
+    // Fetch data from MySQL
+    const userData = await this.mySqlService.getUserDataBySalesId(sales_id);
+
+    if (!userData) {
+      throw new BadRequestException(`User with sales_id ${sales_id} not found in MySQL.`);
+    }
+
+    // Log the retrieved MySQL data
+    console.log('Retrieved MySQL data:', userData);
+
+    // Transform MySQL data to match your MongoDB schema
+    const transformedData: sellDto = {
+      email: userData.email,
+      sales_id: userData.sales_id,
+      total_onboarded_reseller: userData.total_onboarded_reseller, 
+    };
+
+    // Save data to MongoDB
+    return this.postData(transformedData);
+  }
 
   // Get All Clients
   async findAll(): Promise<Client[]> {
@@ -27,7 +46,7 @@ export class SellChannelService {
   // Post Data
   async postData(data: sellDto): Promise<Client> {
     // Count the number of empty fields
-    const emptyFields = ['email', 'sales_id', 'onboardCount'].filter(field => !data[field]);
+    const emptyFields = ['email', 'sales_id', 'total_onboarded_reseller'].filter(field => !data[field]);
 
     // Check if any field is empty
     if (emptyFields.length === 1) {
@@ -39,12 +58,6 @@ export class SellChannelService {
     } else if (emptyFields.length === 3) {
       console.log(`${emptyFields[0]}, ${emptyFields[1]}, and ${emptyFields[2]} are empty.`);
       throw new BadRequestException(`${emptyFields[0]}, ${emptyFields[1]}, and ${emptyFields[2]} cannot be empty.`);
-    }
-
-    // Validate email format
-    if (!validateEmailFormat(data.email)) {
-      console.log('Invalid email format.');
-      throw new BadRequestException('Email must end with @gmail.com');
     }
 
     // Validate sales_id is a string
@@ -69,10 +82,10 @@ export class SellChannelService {
     }
     
     
-    // Validate onboardCount is a numeric string
-    if (isNumberString(data.onboardCount) || isString(data.onboardCount)) {
-      console.log('onboardCount must be a numeric value.');
-      throw new BadRequestException('onboardCount must be a numeric value.');
+    // Validate total_onboarded_reseller is a numeric string
+    if (isNumberString(data.total_onboarded_reseller) || isString(data.total_onboarded_reseller)) {
+      console.log('total_onboarded_reseller must be a numeric value.');
+      throw new BadRequestException('total_onboarded_reseller must be a numeric value.');
     }
 
     // Create a new document using the Mongoose model
@@ -82,7 +95,7 @@ export class SellChannelService {
       // Save the document to the database
       const savedClient = await newClient.save();
 
-      console.log('Data saved to the database:', savedClient);
+      console.log('Data saved to mongodb database:', savedClient);
       return savedClient;
     } catch (error) {
       console.error('Failed to save data to the database:', error.message);

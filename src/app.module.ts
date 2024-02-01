@@ -7,6 +7,7 @@ import { ConfigModule,ConfigService } from '@nestjs/config';
 import {Client,ClientModel} from './sellChannel/sellChannel.model'
 import { UsersModule } from './users/users.module';
 import { OrderModule } from './order/order.module';
+import { MySqlModule } from './mysql/mysql.module';
 
 @Module({
   imports: [ 
@@ -20,7 +21,7 @@ import { OrderModule } from './order/order.module';
       uri: configService.get('URI'),
     }),
     inject: [ConfigService],
-  }),
+  }),MySqlModule,
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   SellChannelModule,UsersModule,OrderModule],
   controllers: [AppController],
