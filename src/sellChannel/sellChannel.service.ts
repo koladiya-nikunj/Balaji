@@ -27,7 +27,7 @@ export class SellChannelService {
   // Post Data
   async postData(data: sellDto): Promise<Client> {
     // Count the number of empty fields
-    const emptyFields = ['email', 'sellId', 'onboardCount'].filter(field => !data[field]);
+    const emptyFields = ['email', 'sales_id', 'onboardCount'].filter(field => !data[field]);
 
     // Check if any field is empty
     if (emptyFields.length === 1) {
@@ -47,26 +47,27 @@ export class SellChannelService {
       throw new BadRequestException('Email must end with @gmail.com');
     }
 
-    // Validate sellId is a string
-    if (!isString(data.sellId)) {
-      console.log('sellId must be a string value.');
-      throw new BadRequestException('sellId must be a string value.');
+    // Validate sales_id is a string
+    if (!isString(data.sales_id)) {
+      console.log('sales_id must be a string value.');
+      throw new BadRequestException('sales_id must be a string value.');
     }
 
-    // Check if the email or sellId already exists in the database
+    // Check if the email or sales_id already exists in the database
     const existingClientEmail = await this.clientModel.findOne({ email: data.email }).exec();
-    const existingClientsellId = await this.clientModel.findOne({ sellId: data.sellId }).exec();
+    const existingClientsales_id = await this.clientModel.findOne({ sales_id: data.sales_id }).exec();
     
-    if (existingClientEmail || existingClientsellId) {
-      const errorMessage = existingClientEmail && existingClientsellId
-        ? 'Email and sellId already exist.'
+    if (existingClientEmail || existingClientsales_id) {
+      const errorMessage = existingClientEmail && existingClientsales_id
+        ? 'email and sales_id already exist.'
         : existingClientEmail
           ? 'email already exists.'
-          : 'sellId already exists.';
+          : 'sales_id already exists.';
       
       console.log(errorMessage);
       throw new ConflictException(errorMessage);
     }
+    
     
     // Validate onboardCount is a numeric string
     if (isNumberString(data.onboardCount) || isString(data.onboardCount)) {

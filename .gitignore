@@ -35,8 +35,6 @@ lerna-debug.log*
 !.vscode/extensions.json
 README.md
 .prettierrc
-package-lock.json
-tsconfig.build.json
-tsconfig.json
+
+
 .eslintrc.js
-package.json
