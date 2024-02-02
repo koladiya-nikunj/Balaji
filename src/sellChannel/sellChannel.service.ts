@@ -35,7 +35,6 @@ export class SellChannelService {
       email: userData.email,
       sales_id: userData.sales_id,
       total_onboarded_reseller: userData.total_onboarded_reseller,
-      isValidate: userData.isValidate
     };
 
     // Save data to MongoDB

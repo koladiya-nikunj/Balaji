@@ -3,6 +3,5 @@ export class sellDto {
     email: string;
     sales_id: string;
     total_onboarded_reseller: number;
-    isValidate :{type :boolean,default:true};
   }
   

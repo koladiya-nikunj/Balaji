@@ -28,7 +28,6 @@ export class UsersService {
       email: user.email,
       user_id: user.user_id,
       onboarded_by: user.onboarded_by,
-      isValidate: user.isValidate,
     }));
   
     // Save data to MongoDB
