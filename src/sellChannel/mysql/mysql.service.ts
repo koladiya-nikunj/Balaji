@@ -1,5 +1,4 @@
 // src/mysql/mysql.service.ts
-
 import { Injectable } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
 

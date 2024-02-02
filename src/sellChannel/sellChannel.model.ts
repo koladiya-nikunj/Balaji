@@ -12,6 +12,9 @@ export class Client extends Document {
 
   @Prop({ required: true })
   total_onboarded_reseller: number;
+
+  @Prop({ default: true })
+  isValidate: boolean;
 }
 
 export const ClientModel = SchemaFactory.createForClass(Client);
