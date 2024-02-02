@@ -4,7 +4,6 @@ import { Client } from './sellChannel.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { sellDto } from './dto/sellDto';
 import { Model } from 'mongoose';
-import { isString } from 'class-validator';
 import { MySqlService } from './mysql/mysql.service'
 
 @Injectable()
@@ -25,7 +24,7 @@ export class SellChannelService {
     // Fetch data from MySQL
     const userData = await this.mySqlService.getUserDataBySalesId(sales_id);
     if (!userData) {
-      throw new BadRequestException(`User with sales_id ${sales_id} not found in MySQL.`);
+      throw new BadRequestException(`User with sales_id '${sales_id}' not found in MySQL.`);
     }
 
     // Log the retrieved MySQL data

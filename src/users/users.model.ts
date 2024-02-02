@@ -1,19 +1,21 @@
-// users/user.model.ts
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
-import { Document } from 'mongoose';
+// client.model.ts
+import { Document, } from 'mongoose';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 
 @Schema()
 export class User extends Document {
   @Prop({ required: true })
-  @IsNotEmpty()
-  @IsEmail()
   email: string;
 
   @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
+  user_id: string;
+
+  @Prop({ default: true })
+  isValidate: boolean;
+
+  @Prop({ required: true })
+  onboarded_by: string;
+
 }
 
 export const UserModel = SchemaFactory.createForClass(User);

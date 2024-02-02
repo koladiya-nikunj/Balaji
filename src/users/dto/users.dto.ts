@@ -1,12 +1,7 @@
 // users/dto/user.dto.ts
-import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
-
-export class UserDto {
-  @IsNotEmpty()
-  @IsEmail()
+export class UsersDto {
   email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  userId: string;
+  user_id: string;
+  onboarded_by : string;
+  isValidate :{type :boolean,default:true};
 }

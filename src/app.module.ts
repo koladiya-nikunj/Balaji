@@ -8,6 +8,7 @@ import {Client,ClientModel} from './sellChannel/sellChannel.model'
 import { UsersModule } from './users/users.module';
 import { OrderModule } from './order/order.module';
 import { MySqlModule } from './sellChannel/mysql/mysql.module';
+import { MySqlUserModule } from './users/userMysql/mysqlUser.module';
 
 @Module({
   imports: [ 
@@ -21,7 +22,7 @@ import { MySqlModule } from './sellChannel/mysql/mysql.module';
       uri: configService.get('URI'),
     }),
     inject: [ConfigService],
-  }),MySqlModule,
+  }),MySqlModule,MySqlUserModule,
   MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
   SellChannelModule,UsersModule,OrderModule],
   controllers: [AppController],
