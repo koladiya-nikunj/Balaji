@@ -1,49 +1,41 @@
-// order.model.ts
-
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+// Order.model.ts
+import { Document } from 'mongoose';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 
 @Schema()
-export class Order {
+export class Order extends Document {
   @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  orderId: string;
+  order_id: string;
 
   @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  invoice: string;
+  user_id: string;
 
   @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  label: string;
+  pickup_address_pincode: number;
 
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsNumber()
-  pincode: number;
-
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsNumber()
+  @Prop({ required:true })
+  shipment_length: number;
+  
+  @Prop({ required:true })
+  shipment_width: number;
+  
+  @Prop({ required:true })
+  shipment_height: number;
+  
+  @Prop({ required:true })
   weight: number;
 
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  height: number;
-
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsString()
-  length: number;
-
-  @Prop({ required: true })
-  @IsNotEmpty()
-  @IsNumber()
+  @Prop({ required:true })
   amount: number;
+
+  @Prop({ required:true })
+  invoice_order: string;
+
+  @Prop({ required:true })
+  provider_label: string;
+
+  @Prop({ default: true })
+  isValidate: boolean;
 }
 
-export const OrderModel = SchemaFactory.createForClass(Order);
+export const UserModel = SchemaFactory.createForClass(Order);

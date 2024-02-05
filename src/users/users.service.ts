@@ -1,5 +1,5 @@
 // src/users/users.service.ts
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
 import { User } from './users.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { UsersDto } from './dto/users.dto';
@@ -56,7 +56,7 @@ export class UsersService {
     // Fetch all data with the same onboarded_by from MySQL
     const allUserData = await this.mySqlUserService.getUserDataByUsesId(onboarded_by);
     if (!Array.isArray(allUserData) || allUserData.length === 0) {
-      throw new BadRequestException(`Users with onboarded_by '${onboarded_by}' not found in MySQL.`);
+      throw new HttpException(`Users with onboarded_by '${onboarded_by}' not found in MySQL.`,HttpStatus.BAD_REQUEST);
     }
 
     // Log the retrieved MySQL data
@@ -91,8 +91,8 @@ export class UsersService {
         const savedUser = await newUser.save();
         savedUsers.push(savedUser);
       } catch (error) {
-        console.error('Failed to save data to the database:', error.message);
-        throw new Error('Failed to save data to the database');
+        console.error('Failed to save data, because some data are missing in mysql databas:', error.message);
+        throw new HttpException(error.message,HttpStatus.BAD_REQUEST);
       }
     }
 

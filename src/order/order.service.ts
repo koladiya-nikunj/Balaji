@@ -1,126 +1,113 @@
-// order.service.ts
-
-import { Injectable, ConflictException, BadRequestException, HttpException } from '@nestjs/common';
+// src/users/users.service.ts
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { Order } from './order.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Order, OrderModel } from './order.model';
 import { OrderDto } from './dto/order.dto';
-import { HttpStatus } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { MySqlOrderService } from './orderMysql/mysqlOrder.service';
 
 @Injectable()
 export class OrderService {
+  constructor(
+    @InjectModel(Order.name) private usersModel: Model<Order>,
+    private readonly mySqlUserService: MySqlOrderService,
+  ) { }
 
-  constructor(@InjectModel(Order.name) private orderModel: Model<Order>) { }
-  
-  // Get All Ordrs
-  async getAllOrders(): Promise<Order[]> {
-    const allOrders = await this.orderModel.find().exec();
-    console.log(allOrders);
-    
-    return allOrders;
+  async getDataSinceLastRequest(onboarded_by: string, lastRequestTimestamp: number): Promise<Order[]> {
+    // Retrieve data since the last request timestamp
+    const userData = await this.usersModel.find({
+      created_date: { $gte: new Date(lastRequestTimestamp) },
+      onboarded_by,
+    });
+
+    if (userData.length === 0) {
+      // Return a meaningful response instead of throwing an error
+      return [];
+    }
+
+    return userData;
   }
 
-  // Post Order
-  async postOrder(data: OrderDto): Promise<Order> {
 
-    // // Check if any required fields are empty
-    const requiredFields = ['orderId', 'amount', 'pincode', 'invoice', 'weight', 'height', 'length', 'label'];
-    let emptyFields = [];
-
-    for (const field of requiredFields) {
-      if (!data[field]) {
-        console.log(`${field} is empty.`);
-        emptyFields.push(field);
-      }
-    }
-
-    if (emptyFields.length > 0) {
-      const errorMessage = (emptyFields.length === 1)
-        ? `${emptyFields[0]} cannot be empty.`
-        : `${emptyFields.join(', ')} cannot be empty.`;
-
-        throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    //  Validation for orderId, invoice, and label are not numbers
-    const invalidNumberFields = ['orderId', 'invoice', 'label'].filter(field => typeof data[field] === 'number');
-
-    if (invalidNumberFields.length > 0) {
-      const errorMessage = `Invalid input: ${invalidNumberFields.join(', ')} cannot be numbers.`;
-      console.log(errorMessage);
-      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    // Check for Duplicates of orderId, invoice & label
-    const fieldsToCheck = ['orderId', 'invoice', 'label'];
-    const duplicateFields = [];
-
-    for (const field of fieldsToCheck) {
-      if (data[field] && await this.orderModel.findOne({ [field]: data[field] }).exec()) {
-        duplicateFields.push(field);
-      }
-    }
-
-    if (duplicateFields.length > 0) {
-      let errorMessage = 'Duplicate entry: ';
-
-      if (duplicateFields.length === 1) {
-        errorMessage += `${duplicateFields[0]} is duplicate.`;
-      } else {
-        errorMessage += `${duplicateFields.join(', ')} are duplicate.`;
-      }
-
-      console.log(errorMessage);
-      throw new HttpException(errorMessage, HttpStatus.CONFLICT);
-    }
-
-    // pincode validation
-    const pinValue = data.pincode;
-
-    if (typeof pinValue !== 'number' || isNaN(pinValue) || !(/^\d{6}$/.test(pinValue.toString()))) {
-      const pinErrorMessage = 'Invalid input: pincode must be a number and must be a 6-digit number.';
-      console.log(pinErrorMessage);
-      throw new HttpException(pinErrorMessage, HttpStatus.BAD_REQUEST);
-    }
-
-    // validation for weight, height & length 
-    const stringFields = ['weight', 'height', 'length'].filter(field => typeof data[field] === 'string');
-    const errorMessage = (stringFields.length === 1)
-      ? `Invalid input: ${stringFields[0]} must be a number.`
-      : `Invalid input: ${stringFields.join(stringFields.length === 2 ? ' and ' : ', ')} must be numbers.`;
-
-    if (stringFields.length > 0) {
-      console.log(errorMessage);
-      throw new BadRequestException(errorMessage);
-    }
-
-    // Amount validation
-    const amountValue = data.amount;
-
-    if (typeof amountValue !== 'number' || isNaN(amountValue)) {
-      const amountErrorMessage = 'Invalid input: amount must be a number.';
-      console.log(amountErrorMessage);
-      throw new BadRequestException(amountErrorMessage);
-    }
-
-    // Create a new order document using the Mongoose model
-    const newOrder = new this.orderModel(data);
+  async findRecentUsers(minutesAgo: number): Promise<OrderDto[]> {
+    const timestampFilter = new Date(Date.now() - minutesAgo * 60 * 1000);
 
     try {
-      // Save the document to the database
-      const savedOrder = await newOrder.save();
+      const allUserData = await this.usersModel.find({
+        created_date: { $gte: timestampFilter },
+      });
 
-      console.log('Data saved to the database:', savedOrder);
-      
-      return savedOrder;
+      // Transform MySQL data to match your MongoDB schema
+      const transformedData: OrderDto[] = allUserData.map(user => ({
+        order_id: user.order_id,
+        user_id: user.user_id,
+        pickup_address_pincode: user.pickup_address_pincode,
+        shipment_length: user.shipment_length,
+        shipment_width:user.shipment_width,
+        shipment_height:user.shipment_height,
+        weight:user.weight,
+        amount:user.amount,
+        invoice_order:user.invoice_order,
+        provider_label:user.provider_label
+      }));
+
+      return transformedData;
     } catch (error) {
+      throw new Error(`Error fetching recent users: ${error.message}`);
+    }
+  }
 
-      if (error.message.includes('duplicate key error')) {
-        throw new ConflictException('Duplicate entry. OrderId must be unique.');
-      } else {
-        console.error('Failed to save data to the database:', error.message);
-        throw new Error('Failed to save data to the database');
+
+  async getDataFromMySQLToMongo(minutesAgo: number, onboarded_by: string): Promise<Order[]> {
+    // Fetch all data with the same onboarded_by from MySQL
+    const allUserData = await this.mySqlUserService.getUserDataByUsesId(onboarded_by);
+    if (!Array.isArray(allUserData) || allUserData.length === 0) {
+      throw new BadRequestException(`Users with onboarded_by '${onboarded_by}' not found in MySQL.`);
+    }
+
+    // Log the retrieved MySQL data
+    console.log('Retrieved MySQL data:', allUserData);
+
+    // Transform MySQL data to match your MongoDB schema
+    const transformedData: OrderDto[] = allUserData.map(user => ({
+      order_id: user.order_id,
+        user_id: user.user_id,
+        pickup_address_pincode: user.pickup_address_pincode,
+        shipment_length: user.shipment_length,
+        shipment_width:user.shipment_width,
+        shipment_height:user.shipment_height,
+        weight:user.weight,
+        amount:user.amount,
+        invoice_order:user.invoice_order,
+        provider_label:user.provider_label
+    }));
+
+    // Save data to MongoDB
+    const savedUsers = await this.postData(transformedData);
+
+    // Log the saved MongoDB data
+    console.log('Data saved to MongoDB database:', savedUsers);
+
+    return savedUsers;
+  }
+
+  // Post Data
+  async postData(data: OrderDto[]): Promise<Order[]> {
+    const savedUsers = [];
+
+    // Iterate over each transformed user and save individually
+    for (const user of data) {
+      const newUser = new this.usersModel(user);
+
+      try {
+        const savedUser = await newUser.save();
+        savedUsers.push(savedUser);
+      } catch (error) {
+        console.error('Failed to save data, because some data are missing in mysql databas:', error.message);
+        throw new Error(error.message);
       }
     }
+
+    return savedUsers;
   }
 }

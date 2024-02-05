@@ -1,14 +1,16 @@
-// order.module.ts
-
+// users/users.module.ts
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
-import { Order, OrderModel } from './order.model';
+import { Order, UserModel } from './order.model';
+import { MySqlOrderModule } from './orderMysql/mysqlOrder.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Order.name, schema: OrderModel }])],
+  imports: [MySqlOrderModule,
+    MongooseModule.forFeature([{ name: Order.name, schema: UserModel }]),
+  ],
   controllers: [OrderController],
-  providers: [OrderService],
+  providers: [OrderService,MySqlOrderModule],
 })
 export class OrderModule {}

@@ -55,7 +55,7 @@ export class SellChannelService {
       return savedClient;
     } catch (error) {
       console.error('Failed to save data to the database:', error.message);
-      throw new Error('Failed to save data to the database');
+      throw new Error(error.message);
     }
   }
 }

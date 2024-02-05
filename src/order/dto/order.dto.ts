@@ -1,37 +1,13 @@
-// order.dto.ts
-
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
-
+// users/dto/user.dto.ts
 export class OrderDto {
-  @IsNotEmpty()
-  @IsString()
-  orderId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  invoice: string;
-
-  @IsNotEmpty()
-  @IsString()
-  label: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  pincode: number;
-
-  @IsNotEmpty()
-  @IsNumber()
+  order_id: string;
+  user_id: string;
+  pickup_address_pincode: number;
+  shipment_length: number;
+  shipment_width: number;
+  shipment_height: number;
   weight: number;
-
-  @IsNotEmpty()
-  @IsString()
-  height: number;
-
-  @IsNotEmpty()
-  @IsString()
-  length: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  amount: number;
+  amount: number
+  invoice_order: string;
+  provider_label: string;
 }
