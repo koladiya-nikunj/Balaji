@@ -1,7 +1,6 @@
-// client.model.ts
-import { Document, } from 'mongoose';
+// User.model.ts
+import { Document } from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
-import * as moment from 'moment-timezone';
 
 @Schema()
 export class User extends Document {
@@ -17,9 +16,8 @@ export class User extends Document {
   @Prop({ required: true })
   onboarded_by: string;
 
-  @Prop({ type: Date, default: Date.now })
-  created_date: Date; // Add this line for the created date
-
+  @Prop({ default: () => new Date() }) // Use a function to get the current date and time
+  created_date: string;
 }
 
 export const UserModel = SchemaFactory.createForClass(User);

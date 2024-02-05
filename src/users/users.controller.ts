@@ -1,34 +1,52 @@
-// src/sellChannel/sellChannel.controller.ts
-import { Body, Controller, Get, HttpStatus } from '@nestjs/common';
+// src/users/users.controller.ts
+import { BadRequestException, Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UsersDto } from './dto/users.dto';
+import { User } from './users.model';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  private lastRequestTimestamps: { [key: string]: number } = {};
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
-  async getApi(@Body() body: { onboarded_by: string }) {
-    try {
-      if (!body.onboarded_by) {
-        throw new Error('onboarded_by must not be empty in the request body');
-      }
-      // Check if sales_id is a string
-      if (typeof body.onboarded_by !== 'string') {
-        throw new Error('onboarded_by must be a string in the request body');
-      }
-      const userData = await this.usersService.getDataFromMySQLToMongo(body.onboarded_by);
+  async findRecentUsers(
+    @Query('time', ParseIntPipe) time: number,
+    @Query('onboarded_by') onboardedBy?: string,
+  ): Promise<{ data: User[] | string } | { error: { message: string; statusCode: number } }> {
+    if (!onboardedBy) {
+      // Handle the case where 'onboarded_by' is not provided in the query params
+      throw new BadRequestException('The onboarded_by parameter is required.');
+    }
 
-      // Use userData to do further processing or return it in the response
-      return userData;
+    const lastRequestTimestamp = this.lastRequestTimestamps[onboardedBy];
+    
+    try {
+      let userData: User[] | string;
+      if (!lastRequestTimestamp) {
+        // First request, get all data
+        userData = await this.usersService.getDataFromMySQLToMongo(time, onboardedBy);
+        // Save the timestamp for subsequent requests
+        this.lastRequestTimestamps[onboardedBy] = Date.now();
+      } else {
+        // Subsequent requests, get data since last request
+        userData = await this.usersService.getDataSinceLastRequest(onboardedBy, lastRequestTimestamp);
+        // Update the timestamp for subsequent requests
+        this.lastRequestTimestamps[onboardedBy] = Date.now();
+      }
+
+      if (Array.isArray(userData) && userData.length === 0) {
+        // No new data found
+        console.log(`No new data found for last ${time} minutes`);
+        throw new BadRequestException(`No new data found for last ${time} minutes`);
+      } else {
+        // Data found or error occurred
+        return { data: userData };
+      }
     } catch (error) {
       console.error(error.message);
       // Return a meaningful error response
-      return {
-        error: {
-          message: error.message,
-          statusCode: HttpStatus.BAD_REQUEST, // Set the appropriate status code
-        },
-      };
+      throw new BadRequestException(error.message);
     }
   }
 }
