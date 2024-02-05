@@ -1,6 +1,7 @@
 // client.model.ts
 import { Document, } from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
+import * as moment from 'moment-timezone';
 
 @Schema()
 export class User extends Document {
