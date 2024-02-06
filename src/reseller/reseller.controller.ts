@@ -1,6 +1,6 @@
 // src/reseller/reseller.controller.ts
 
-import { BadRequestException, Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { ResellerService } from './reseller.service';
 import { Reseller } from './reseller.model';
 

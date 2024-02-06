@@ -5,13 +5,14 @@ import { DistributorModule } from './distributor/distributor.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule,ConfigService } from '@nestjs/config';
 import {Distributor,DistributorModel} from './distributor/distributor.model'
-import { ResellerModule } from './reseller/users.module';
+import { ResellerModule } from './reseller/reseller.module';
 import { OrderModule } from './order/order.module';
 import { MySqlDistributorModule } from './distributor/mysql/mysqlDistributor.module';
 import { MySqlResellerModule } from './reseller/resellerMysql/mysqlReseller.module';
+import { MongoModule } from './mongo/mongo.module';
 
 @Module({
-  imports: [ 
+  imports: [ MongoModule,
     ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: ['.env'],

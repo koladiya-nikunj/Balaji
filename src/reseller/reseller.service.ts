@@ -1,6 +1,6 @@
 // src/reseller/reseller.service.ts
 
-import { Injectable, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Reseller } from './reseller.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ResellerDto } from './resellerDto/resellerDto';

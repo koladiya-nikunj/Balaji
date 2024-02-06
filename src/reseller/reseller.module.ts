@@ -13,5 +13,6 @@ import { MySqlResellerModule } from './resellerMysql/mysqlReseller.module';
   ],
   controllers: [ResellerController],
   providers: [ResellerService,MySqlResellerModule],
+  exports : []
 })
 export class ResellerModule {}
