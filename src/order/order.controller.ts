@@ -1,7 +1,7 @@
-// src/users/users.controller.ts
-import { BadRequestException, Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Query } from '@nestjs/common';
+// src/order/order.controller.ts
+
+import { BadRequestException, Body, Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { OrderDto } from './dto/order.dto';
 import { Order } from './order.model';
 
 @Controller('order')

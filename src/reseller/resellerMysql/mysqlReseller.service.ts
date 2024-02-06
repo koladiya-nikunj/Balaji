@@ -1,9 +1,10 @@
-// src/mysqlUser/mysqlUser.service.ts
+// src/resellerMysql/mysqlReseller.service.ts
+
 import { Injectable } from '@nestjs/common';
 import * as mysql from 'mysql2/promise';
 
 @Injectable()
-export class MySqlUserService {
+export class MySqlResellerService {
   private connection;
 
   constructor() {

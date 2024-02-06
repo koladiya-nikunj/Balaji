@@ -1,9 +1,10 @@
-// User.model.ts
+// src/reseller/reseller.model.ts
+
 import { Document } from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 
 @Schema()
-export class User extends Document {
+export class Reseller extends Document {
   @Prop({ required: true })
   email: string;
 
@@ -20,4 +21,4 @@ export class User extends Document {
   isValidate: boolean;
 }
 
-export const UserModel = SchemaFactory.createForClass(User);
+export const ResellerModel = SchemaFactory.createForClass(Reseller);

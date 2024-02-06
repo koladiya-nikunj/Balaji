@@ -1,5 +1,6 @@
-// sellChannel/dto/client.dto.ts
-export class sellDto {
+// src/distributorDto/distributorDto.ts
+
+export class distributorDto {
     email: string;
     sales_id: string;
     total_onboarded_reseller: number;

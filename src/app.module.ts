@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { SellChannelModule } from './sellChannel/sellChannel.module';
+import { DistributorModule } from './distributor/distributor.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule,ConfigService } from '@nestjs/config';
-import {Client,ClientModel} from './sellChannel/sellChannel.model'
-import { UsersModule } from './users/users.module';
+import {Distributor,DistributorModel} from './distributor/distributor.model'
+import { ResellerModule } from './reseller/users.module';
 import { OrderModule } from './order/order.module';
-import { MySqlModule } from './sellChannel/mysql/mysql.module';
-import { MySqlUserModule } from './users/userMysql/mysqlUser.module';
+import { MySqlDistributorModule } from './distributor/mysql/mysqlDistributor.module';
+import { MySqlResellerModule } from './reseller/resellerMysql/mysqlReseller.module';
 
 @Module({
   imports: [ 
@@ -22,9 +22,9 @@ import { MySqlUserModule } from './users/userMysql/mysqlUser.module';
       uri: configService.get('URI'),
     }),
     inject: [ConfigService],
-  }),MySqlModule,MySqlUserModule,
-  MongooseModule.forFeature([{ name: Client.name, schema: ClientModel }]),
-  SellChannelModule,UsersModule,OrderModule],
+  }),MySqlDistributorModule,MySqlResellerModule,
+  MongooseModule.forFeature([{ name: Distributor.name, schema: DistributorModel }]),
+  DistributorModule,ResellerModule,OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })

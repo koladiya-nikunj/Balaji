@@ -1,4 +1,5 @@
-// Order.model.ts
+// src/order/Order.model.ts
+
 import { Document } from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 

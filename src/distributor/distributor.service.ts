@@ -1,19 +1,20 @@
-// sellChannel.service.ts
+// src/distributor/distributor.service.ts
+
 import { ConflictException, Injectable, BadRequestException } from '@nestjs/common';
-import { Client } from './sellChannel.model';
+import { Distributor } from './distributor.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { sellDto } from './dto/sellDto';
+import { distributorDto } from './distributorDto/distributorDto';
 import { Model } from 'mongoose';
-import { MySqlService } from './mysql/mysql.service'
+import { mysqlDistributorService } from './mysql/mysqlDistributor.service'
 
 @Injectable()
-export class SellChannelService {
+export class DistributorService {
   constructor(
-    @InjectModel(Client.name) private clientModel: Model<Client>,
-    private readonly mySqlService: MySqlService,
+    @InjectModel(Distributor.name) private clientModel: Model<Distributor>,
+    private readonly mySqlService: mysqlDistributorService,
   ) { }
 
-  async getDataFromMySQLToMongo(sales_id: string): Promise<Client> {
+  async getDataFromMySQLToMongo(sales_id: string): Promise<Distributor> {
 
     // Check if the user already exists in MongoDB
     const existingUser = await this.clientModel.findOne({ sales_id }).exec();
@@ -31,7 +32,7 @@ export class SellChannelService {
     console.log('Retrieved MySQL data:', userData);
 
     // Transform MySQL data to match your MongoDB schema
-    const transformedData: sellDto = {
+    const transformedData: distributorDto = {
       email: userData.email,
       sales_id: userData.sales_id,
       total_onboarded_reseller: userData.total_onboarded_reseller,
@@ -42,7 +43,7 @@ export class SellChannelService {
   }
 
   // Post Data
-  async postData(data: sellDto): Promise<Client> {
+  async postData(data: distributorDto): Promise<Distributor> {
 
     // Create a new document using the Mongoose model
     const newClient = new this.clientModel(data);
