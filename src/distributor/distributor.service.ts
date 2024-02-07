@@ -87,7 +87,6 @@ export class DistributorService {
   
     // Iterate over each transformed user and save individually
     for (const user of data) {
-  console.log('data transfer to mongo :',data);
   
       // Create a new Distributor instance
       const newUser = new this.clientModel(user);
@@ -97,7 +96,6 @@ export class DistributorService {
         // Save the user to MongoDB
         const savedUser = await newUser.save();
         savedUsers.push(savedUser);
-console.log('saved to mongo :',savedUser);
         
       } catch (error) {
         console.error('Failed to save data:', error.message);
