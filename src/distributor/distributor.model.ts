@@ -5,6 +5,7 @@ import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 
 @Schema()
 export class Distributor extends Document {
+
   @Prop({ required: true })
   email: string;
 
@@ -12,7 +13,13 @@ export class Distributor extends Document {
   sales_id: string;
 
   @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
   total_onboarded_reseller: number;
+  
+  @Prop({ required: true })
+  created_date: Date;
 
   @Prop({ default: true })
   isValidate: boolean;

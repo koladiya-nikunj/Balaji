@@ -1,28 +1,28 @@
-// src/distributor/distributor.controller.ts
+// src/order/order.controller.ts
 
 import { BadRequestException, Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
-import { DistributorService } from './distributor.service';
-import { Distributor } from './distributor.model';
+import { ResellerService } from './order.service';
+import { Reseller } from './order.model';
 
-@Controller('distributor')
-export class DistributorController {
+@Controller('reseller')
+export class OrderController {
   private lastRequestTimestamps: { [key: string]: number } = {};
-  constructor(private readonly usersService: DistributorService) { }
+  constructor(private readonly usersService: ResellerService) { }
 
   @Get()
   async findRecentUsers(
     @Query('time', ParseIntPipe) time: number,
-    @Query('sales_id') orderedBy?: string,
-  ): Promise<{ data: Distributor[] | string } | { error: { message: string; statusCode: number } }> {
+    @Query('onboarded_by') orderedBy?: string,
+  ): Promise<{ data: Reseller[] | string } | { error: { message: string; statusCode: number } }> {
     if (!orderedBy) {
-      // Handle the case where 'sales_id' is not provided in the query params
-      throw new BadRequestException('The sales_id parameter is required.');
+      // Handle the case where 'user_id' is not provided in the query params
+      throw new BadRequestException('The user_id parameter is required.');
     }
 
     const lastRequestTimestamp = this.lastRequestTimestamps[orderedBy];
     
     try {
-      let userData: Distributor[] | string;
+      let userData: Reseller[] | string;
       if (!lastRequestTimestamp) {
         // First request, get all data
         userData = await this.usersService.getDataFromMySQLToMongo(time, orderedBy);
