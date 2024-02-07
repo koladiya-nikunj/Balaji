@@ -6,6 +6,7 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { Order, UserModel } from './order.model';
 import { MySqlOrderModule } from './orderMysql/mysqlOrder.module';
+import { OrderModel } from 'src/mongo/mongo.model';
 
 @Module({
   imports: [MySqlOrderModule,

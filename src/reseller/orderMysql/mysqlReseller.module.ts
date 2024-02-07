@@ -1,4 +1,4 @@
-//  src/resellerMysql/mysqlReseller.module.ts
+//  src/order/mysqlUser/mysqlOrder.module.ts
 
 import { Module } from '@nestjs/common';
 import { MySqlResellerService } from './mysqlReseller.service';
