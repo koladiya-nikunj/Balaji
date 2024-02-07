@@ -14,5 +14,6 @@ import { OrderModel } from 'src/mongo/mongo.model';
   ],
   controllers: [OrderController],
   providers: [OrderService,MySqlOrderModule],
+  exports:[OrderService]
 })
 export class OrderModule {}

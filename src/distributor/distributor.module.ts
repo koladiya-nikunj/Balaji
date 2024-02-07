@@ -12,5 +12,6 @@ import { MySqlDistributorModule } from './mysql/mysqlDistributor.module';
     MongooseModule.forFeature([{ name: Distributor.name, schema: DistributorModel }])],
   controllers: [DistributorController],
   providers: [DistributorService,MySqlDistributorModule],
+  exports:[DistributorService]
 })
 export class DistributorModule { }

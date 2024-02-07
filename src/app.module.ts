@@ -10,9 +10,10 @@ import { OrderModule } from './order/order.module';
 import { MySqlDistributorModule } from './distributor/mysql/mysqlDistributor.module';
 import { MySqlResellerModule } from './reseller/orderMysql/mysqlReseller.module';
 import { MongoModule } from './mongo/mongo.module';
+import { DataModule } from './data/data.module';
 
 @Module({
-  imports: [ MongoModule,
+  imports: [ MongoModule,DataModule,
     ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: ['.env'],
