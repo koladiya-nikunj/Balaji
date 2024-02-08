@@ -21,11 +21,6 @@ export class ResellerService {
       onboarded_by,
     });
 
-    if (userData.length === 0) {
-      // Return a meaningful response instead of throwing an error
-      return [];
-    }
-
     return userData;
   }
 
@@ -43,7 +38,7 @@ export class ResellerService {
         email: user.email,
         user_id: user.user_id,
         onboarded_by: user.onboarded_by,
-        mobile_no:user.mobile_no,
+        created_date: user.created_date
       }));
 
       return transformedData;
@@ -68,7 +63,7 @@ export class ResellerService {
       email: user.email,
       user_id: user.user_id,
       onboarded_by: user.onboarded_by,
-      mobile_no:user.mobile_no,
+      created_date: user.created_date
     }));
 
     // Save data to MongoDB
@@ -81,32 +76,30 @@ export class ResellerService {
   }
 
   // Post Data
-async postData(data: ResellerDto[]): Promise<Reseller[]> {
-  const savedUsers = [];
-console.log('post data',data);
+  async postData(data: ResellerDto[]): Promise<Reseller[]> {
+    const savedUsers = [];
 
-  // Iterate over each transformed user and save individually
-  for (const user of data) {
-    console.log('user of data',user);
-    
-    const newUser = new this.usersModel({
-      email: user.email,
-      user_id: user.user_id,
-      onboarded_by: user.onboarded_by,
-      mobile_no:user.mobile_no,
-    });
+    // Iterate over each transformed user and save individually
+    for (const user of data) {
 
-    try {
-      const savedUser = await newUser.save();
-      savedUsers.push(savedUser);
-    } catch (error) {
-      console.error('Failed to save data:', error.message);
-      throw new Error(error.message);
+      const newUser = new this.usersModel({
+        email: user.email,
+        user_id: user.user_id,
+        onboarded_by: user.onboarded_by,
+        created_date: user.created_date
+      });
+
+      try {
+        const savedUser = await newUser.save();
+        savedUsers.push(savedUser);
+      } catch (error) {
+        console.error('Failed to save data:', error.message);
+        throw new Error(error.message);
+      }
     }
-  }
 
-  return savedUsers;
-}
+    return savedUsers;
+  }
 
 
 }

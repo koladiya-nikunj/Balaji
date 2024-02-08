@@ -14,11 +14,14 @@ export class Reseller extends Document {
   @Prop({ required: true })
   onboarded_by: string;
 
-  @Prop({ required: true })
-  mobile_no: number;
-
   @Prop({ default: true })
   isValidate: boolean;
+
+  @Prop({ required: true })
+  created_date: Date;
+
 }
+
+
 
 export const UserModel = SchemaFactory.createForClass(Reseller);

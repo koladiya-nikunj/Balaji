@@ -21,11 +21,6 @@ export class DistributorService {
       sales_id,
     });
 
-    if (userData.length === 0) {
-      // Return a meaningful response instead of throwing an error
-      return [];
-    }
-
     return userData;
   }
 
@@ -43,7 +38,7 @@ export class DistributorService {
         email: user.email,
         sales_id: user.sales_id,
         total_onboarded_reseller: user.total_onboarded_reseller,
-        created_date:user.created_date
+        created_date: user.created_date
       }));
 
       return transformedData;
@@ -65,10 +60,10 @@ export class DistributorService {
 
     // Transform MySQL data to match your MongoDB schema
     const transformedData: DistributorDto[] = allUserData.map(user => ({
-        email: user.email,
-        sales_id: user.sales_id,
-        total_onboarded_reseller: user.total_onboarded_reseller,
-        created_date:user.created_date
+      email: user.email,
+      sales_id: user.sales_id,
+      total_onboarded_reseller: user.total_onboarded_reseller,
+      created_date: user.created_date
     }));
 
     // Save data to MongoDB
@@ -82,29 +77,28 @@ export class DistributorService {
 
   async postData(data: DistributorDto[]): Promise<Distributor[]> {
     const savedUsers = [];
-  
+
     // Iterate over each transformed user and save individually
     for (const user of data) {
-  
+
       // Create a new Distributor instance
       const newUser = new this.clientModel(user);
-  console.log('New instance :',newUser);
-  
+
       try {
         // Save the user to MongoDB
         const savedUser = await newUser.save();
         savedUsers.push(savedUser);
-        
+
       } catch (error) {
         console.error('Failed to save data:', error.message);
         // Rethrow the error or handle it appropriately
         throw new Error(error.message);
       }
     }
-  
+
     return savedUsers;
   }
-  
-  
+
+
 
 }

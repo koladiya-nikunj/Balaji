@@ -7,15 +7,15 @@ import { Client } from 'src/sellChannel/sellChannel.model';
 @Injectable()
 export class MongoService {
   constructor(
-    @InjectModel(Reseller.name) private resellerModel: Model<Reseller>,
+    // @InjectModel(Reseller.name) private resellerModel: Model<Reseller>,
     @InjectModel(Order.name) private orderModel: Model<Order>,
     @InjectModel(Client.name) private sellModel: Model<Client>,
   ) {}
 
 
-  async getResellers() {
-    return this.resellerModel.find().exec();
-  }
+  // async getResellers() {
+  //   return this.resellerModel.find().exec();
+  // }
 
   async getOrders() {
     return this.orderModel.find().exec();

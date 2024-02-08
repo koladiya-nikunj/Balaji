@@ -8,11 +8,6 @@ export const DistributorSchema = new Schema({
   address: String,
 });
 
-export const ResellerSchema = new Schema({
-  name: String,
-  email: String,
-  address: String,
-});
 
 export const OrderSchema = new Schema({
   order_id: String,
@@ -34,6 +29,5 @@ export const ClientSchema = new Schema({
 });
 
 
-export const ResellerModel = model('Reseller', ResellerSchema);
 export const OrderModel = model('Order', OrderSchema);
 export const ClientModel = model('CLient', ClientSchema);
