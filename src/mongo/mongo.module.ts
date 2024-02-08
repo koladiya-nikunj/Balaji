@@ -10,7 +10,6 @@ import { MongoService } from './mongo.service';
   imports: [
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema },
-      { name: 'Client', schema: OrderSchema },
 
     ]),
   ],

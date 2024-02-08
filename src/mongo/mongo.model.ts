@@ -2,12 +2,6 @@
 
 import { Schema, model } from 'mongoose';
 
-export const DistributorSchema = new Schema({
-  name: { type: String, required: true },
-  email: String,
-  address: String,
-});
-
 
 export const OrderSchema = new Schema({
   order_id: String,
@@ -22,12 +16,6 @@ export const OrderSchema = new Schema({
   provider_label: String,
 });
 
-export const ClientSchema = new Schema({
-  name: { type: String, required: true },
-  email: String,
-  address: String,
-});
 
 
 export const OrderModel = model('Order', OrderSchema);
-export const ClientModel = model('CLient', ClientSchema);
