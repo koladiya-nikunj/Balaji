@@ -30,4 +30,4 @@ export const ClientSchema = new Schema({
 
 export const ResellerModel = model('Reseller', ResellerSchema);
 export const OrderModel = model('Order', OrderSchema);
-export const ClientModel = model('CLient', ClientSchema);
+export const ClientModel = model('Distributor', ClientSchema);

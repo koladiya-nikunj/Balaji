@@ -37,7 +37,6 @@ export class DistributorController {
 
       if (Array.isArray(userData) && userData.length === 0) {
         // No new data found
-        console.log(`No new data found for last ${time} minutes`);
         throw new BadRequestException(`No new data found for last ${time} minutes`);
       } else {
         // Data found or error occurred

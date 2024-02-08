@@ -17,7 +17,7 @@ export class MongoController {
     return this.mongoService.getOrders();
   }
 
-  @Get('clients')
+  @Get('distributors')
   async getSeller() {
     return this.mongoService.getSeller();
   }

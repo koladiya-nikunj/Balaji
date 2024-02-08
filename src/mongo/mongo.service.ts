@@ -4,12 +4,13 @@ import { Model } from 'mongoose';
 import { Reseller } from 'src/reseller/order.model';
 import { Order } from 'src/order/order.model';
 import { Client } from 'src/sellChannel/sellChannel.model';
+import { Distributor } from 'src/distributor/distributor.model';
 @Injectable()
 export class MongoService {
   constructor(
     @InjectModel(Reseller.name) private resellerModel: Model<Reseller>,
     @InjectModel(Order.name) private orderModel: Model<Order>,
-    @InjectModel(Client.name) private sellModel: Model<Client>,
+    @InjectModel(Distributor.name) private sellModel: Model<Distributor>,
   ) {}
 
 
