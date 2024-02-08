@@ -1,22 +1,21 @@
-// mongo/mongo.model.ts
+// distributor.model.ts
 
-import { Schema, model } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
+export interface Distributor extends Document {
+  email: string;
+  sales_id: string;
+  total_onboarded_reseller: number;
+  created_date: Date;
+  isValidate: boolean;
+}
 
-export const OrderSchema = new Schema({
-  order_id: String,
-  user_id: String,
-  pickup_address_pincode: Number,
-  shipment_length: Number,
-  shipment_width: Number,
-  shipment_height: Number,
-  weight: Number,
-  amount: Number,
-  invoice_order: String,
-  provider_label: String,
-  created_date:String,
+const distributorSchema = new Schema<Distributor>({
+  email: { type: String, required: true },
+  sales_id: { type: String, required: true },
+  total_onboarded_reseller: { type: Number, required: true },
+  created_date: { type: Date, required: true },
+  isValidate: { type: Boolean, default: true },
 });
 
-
-
-export const OrderModel = model('Order', OrderSchema);
+export const DistributorModel = model<Distributor>('Distributor', distributorSchema);
