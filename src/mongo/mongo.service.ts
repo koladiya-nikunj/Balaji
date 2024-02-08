@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Distributor } from 'src/distributor/distributor.model';
 import { Reseller } from 'src/reseller/order.model';
 import { Order } from 'src/order/order.model';
 import { Client } from 'src/sellChannel/sellChannel.model';

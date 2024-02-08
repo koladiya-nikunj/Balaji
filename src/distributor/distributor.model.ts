@@ -13,9 +13,6 @@ export class Distributor extends Document {
   sales_id: string;
 
   @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
   total_onboarded_reseller: number;
   
   @Prop({ required: true })

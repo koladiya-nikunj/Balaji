@@ -41,7 +41,6 @@ export class DistributorService {
       // Transform MySQL data to match your MongoDB schema
       const transformedData: DistributorDto[] = allUserData.map(user => ({
         email: user.email,
-        name:user.name,
         sales_id: user.sales_id,
         total_onboarded_reseller: user.total_onboarded_reseller,
         created_date:user.created_date
@@ -68,7 +67,6 @@ export class DistributorService {
     const transformedData: DistributorDto[] = allUserData.map(user => ({
         email: user.email,
         sales_id: user.sales_id,
-        name:user.name,
         total_onboarded_reseller: user.total_onboarded_reseller,
         created_date:user.created_date
     }));
