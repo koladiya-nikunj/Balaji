@@ -38,7 +38,7 @@ export class ResellerService {
         email: user.email,
         user_id: user.user_id,
         onboarded_by: user.onboarded_by,
-        created_date: user.created_date
+        created_date: user.created_date.toLocaleString()
       }));
 
       return transformedData;
@@ -63,7 +63,7 @@ export class ResellerService {
       email: user.email,
       user_id: user.user_id,
       onboarded_by: user.onboarded_by,
-      created_date: user.created_date
+      created_date: user.created_date.toLocaleString()
     }));
 
     // Save data to MongoDB
@@ -86,7 +86,7 @@ export class ResellerService {
         email: user.email,
         user_id: user.user_id,
         onboarded_by: user.onboarded_by,
-        created_date: user.created_date
+        created_date: user.created_date.toLocaleString()
       });
 
       try {

@@ -17,8 +17,8 @@ export class Reseller extends Document {
   @Prop({ default: true })
   isValidate: boolean;
 
-  @Prop({ required: true })
-  created_date: Date;
+  @Prop({ default: () => new Date() }) // Use a function to get the current date and time
+  created_date: string;
 
 }
 

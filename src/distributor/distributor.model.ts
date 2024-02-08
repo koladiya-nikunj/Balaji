@@ -15,8 +15,8 @@ export class Distributor extends Document {
   @Prop({ required: true })
   total_onboarded_reseller: number;
   
-  @Prop({ required: true })
-  created_date: Date;
+  @Prop({ default: () => new Date() }) // Use a function to get the current date and time
+  created_date: string;
 
   @Prop({ default: true })
   isValidate: boolean;

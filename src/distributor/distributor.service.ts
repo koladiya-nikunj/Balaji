@@ -38,7 +38,7 @@ export class DistributorService {
         email: user.email,
         sales_id: user.sales_id,
         total_onboarded_reseller: user.total_onboarded_reseller,
-        created_date: user.created_date
+        created_date: user.created_date.toLocaleString()
       }));
 
       return transformedData;
@@ -63,7 +63,7 @@ export class DistributorService {
       email: user.email,
       sales_id: user.sales_id,
       total_onboarded_reseller: user.total_onboarded_reseller,
-      created_date: user.created_date
+      created_date: user.created_date.toLocaleString()
     }));
 
     // Save data to MongoDB
