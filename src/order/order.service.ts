@@ -45,7 +45,7 @@ export class OrderService {
         amount:user.amount,
         invoice_order:user.invoice_order,
         provider_label:user.provider_label,
-        created_date:user.created_date,
+        created_date: user.created_date.toLocaleString()
       }));
 
       return transformedData;
@@ -77,7 +77,7 @@ export class OrderService {
         amount:user.amount,
         invoice_order:user.invoice_order,
         provider_label:user.provider_label,
-        created_date:user.created_date,
+        created_date: user.created_date.toLocaleString()
     }));
 
     // Save data to MongoDB
