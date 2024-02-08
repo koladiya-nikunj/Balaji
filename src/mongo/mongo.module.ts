@@ -11,7 +11,7 @@ import { MongoService } from './mongo.service';
     MongooseModule.forFeature([
       { name: 'Reseller', schema: ResellerSchema },
       { name: 'Order', schema: OrderSchema },
-      { name: 'Distributor', schema: OrderSchema },
+      { name: 'Client', schema: OrderSchema },
 
     ]),
   ],
