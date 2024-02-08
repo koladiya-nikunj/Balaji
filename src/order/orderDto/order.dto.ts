@@ -11,4 +11,5 @@ export class OrderDto {
   amount: number
   invoice_order: string;
   provider_label: string;
-}
+  created_date:Date;
+} 

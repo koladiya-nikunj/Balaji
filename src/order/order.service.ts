@@ -20,12 +20,7 @@ export class OrderService {
       created_date: { $gte: new Date(lastRequestTimestamp) },
       onboarded_by,
     });
-
-    if (userData.length === 0) {
-      // Return a meaningful response instead of throwing an error
-      return [];
-    }
-
+    
     return userData;
   }
 
@@ -49,7 +44,8 @@ export class OrderService {
         weight:user.weight,
         amount:user.amount,
         invoice_order:user.invoice_order,
-        provider_label:user.provider_label
+        provider_label:user.provider_label,
+        created_date:user.created_date,
       }));
 
       return transformedData;
@@ -80,7 +76,8 @@ export class OrderService {
         weight:user.weight,
         amount:user.amount,
         invoice_order:user.invoice_order,
-        provider_label:user.provider_label
+        provider_label:user.provider_label,
+        created_date:user.created_date,
     }));
 
     // Save data to MongoDB

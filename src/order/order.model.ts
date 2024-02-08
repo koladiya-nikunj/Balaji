@@ -35,6 +35,10 @@ export class Order extends Document {
   @Prop({ required:true })
   provider_label: string;
 
+  @Prop({ required: true, type: Date }) // Change the type to string to store as "2022-05-16 08:56:51"
+  created_date: Date;
+
+
   @Prop({ default: true })
   isValidate: boolean;
 }

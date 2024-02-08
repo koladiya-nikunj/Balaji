@@ -7,11 +7,6 @@ import { MongoService } from './mongo.service';
 export class MongoController {
   constructor(private readonly mongoService: MongoService) {}
 
-  @Get('distributors')
-  async findAllDistributors() {
-    return this.mongoService.findAllDistributors();
-  }
-
   @Get('resellers')
   async getResellers() {
     return this.mongoService.getResellers();
@@ -21,4 +16,10 @@ export class MongoController {
   async getOrders() {
     return this.mongoService.getOrders();
   }
+
+  @Get('clients')
+  async getSeller() {
+    return this.mongoService.getSeller();
+  }
+
 }

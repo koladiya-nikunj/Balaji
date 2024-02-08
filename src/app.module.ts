@@ -11,9 +11,10 @@ import { MySqlDistributorModule } from './distributor/mysql/mysqlDistributor.mod
 import { MySqlResellerModule } from './reseller/orderMysql/mysqlReseller.module';
 import { MongoModule } from './mongo/mongo.module';
 import { DataModule } from './data/data.module';
+import { SellChannelModule } from './sellChannel/sellChannel.module';
 
 @Module({
-  imports: [ MongoModule,DataModule,
+  imports: [ MongoModule,DataModule,SellChannelModule,
     ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: ['.env'],

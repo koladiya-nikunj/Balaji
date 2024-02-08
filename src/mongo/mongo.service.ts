@@ -4,17 +4,15 @@ import { Model } from 'mongoose';
 import { Distributor } from 'src/distributor/distributor.model';
 import { Reseller } from 'src/reseller/order.model';
 import { Order } from 'src/order/order.model';
+import { Client } from 'src/sellChannel/sellChannel.model';
 @Injectable()
 export class MongoService {
   constructor(
-    @InjectModel(Distributor.name) private distributorModel: Model<Distributor>,
     @InjectModel(Reseller.name) private resellerModel: Model<Reseller>,
     @InjectModel(Order.name) private orderModel: Model<Order>,
+    @InjectModel(Client.name) private sellModel: Model<Client>,
   ) {}
 
-  async findAllDistributors(): Promise<Distributor[]> {
-    return this.distributorModel.find().exec();
-  }
 
   async getResellers() {
     return this.resellerModel.find().exec();
@@ -22,5 +20,9 @@ export class MongoService {
 
   async getOrders() {
     return this.orderModel.find().exec();
+  }
+
+  async getSeller() {
+    return this.sellModel.find().exec();
   }
 }
